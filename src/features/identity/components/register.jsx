@@ -120,7 +120,7 @@ const Register = () => {
                 }
                 {
                   errors.confirmPassword && errors.confirmPassword.type === 'validate' && (
-                    <p className="text-danger small fw-bold mt-1">
+                    <p className="text-danger small fw-bold mt-1 ">
                       {errors.confirmPassword?.message}
                     </p>
                   )
