@@ -1,7 +1,22 @@
 import logo from '@assets/images/logo.svg'
-import { Link } from 'react-router-dom';
+import { Link, useSubmit } from 'react-router-dom';
+import { httpService } from '../../../core/http-service';
+import { useForm } from 'react-hook-form';
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors }
+  } = useForm();
+
+  const submitForm = useSubmit()
+  const onSubmit = (data) => {
+    console.log('data: ', data)
+    submitForm(data, {method: 'post'})
+  }
+
   return (
     <>
       <div className="text-center mt-4">
@@ -19,17 +34,45 @@ const Login = () => {
       <div className="card">
         <div className="card-body">
           <div className="m-sm-4">
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-3">
                 <label className="form-label">موبایل</label>
-                <input className="form-control form-control-lg" />
+                <input {...register('mobile', {
+                  required: 'موبایل الزامی است',
+                  minLength: 11,
+                  maxLength: 11
+                })} className={`form-control form-control-lg ${errors.mobile && 'is-invalid'}`} />
+                {
+                  errors.mobile && errors.mobile.type === 'required' && (
+                    <p className="text-danger small fw-bold mt-1">
+                      {errors.mobile?.message}
+                    </p>
+                  )
+                }
+                {
+                  errors.mobile && (errors.mobile.type === 'minLength' || errors.mobile.type === 'maxLength') && (
+                    <p className="text-danger small fw-bold mt-1">
+                      موبایل باید 11 رقم باشد
+                    </p>
+                  )
+                }
               </div>
               <div className="mb-3">
                 <label className="form-label">رمز عبور</label>
                 <input
-                  className="form-control form-control-lg mb-2"
+                  {...register('password', {
+                    required: 'رمز عبور الزامی است'
+                  })}
+                  className={`form-control form-control-lg ${errors.password && 'is-invalid'}`}
                   type="password"
                 />
+                {
+                  errors.password && errors.password.type === 'required' && (
+                    <p className="text-danger small fw-bold mt-1">
+                      {errors.password?.message}
+                    </p>
+                  )
+                }
               </div>
               <div className="text-center mt-3">
                 <button type="submit" className="btn btn-lg btn-primary">
@@ -44,3 +87,14 @@ const Login = () => {
   )
 }
 export default Login;
+
+export async function loginAction ({request}) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  const response = await httpService.post('/Users/login', data)
+  if (response.status === 200) {
+    console.log('request: ', response)
+    localStorage.setItem('token', response?.data.token)
+    // return redirect('/')
+  }
+}
