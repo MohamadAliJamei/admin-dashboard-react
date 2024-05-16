@@ -1,6 +1,6 @@
 import logo from '@assets/images/logo.svg'
-import { Link, useSubmit } from 'react-router-dom';
-import { httpService } from '../../../core/http-service';
+import { Link, redirect, useNavigation, useRouteError, useSubmit } from 'react-router-dom';
+import { httpService } from '@core/http-service';
 import { useForm } from 'react-hook-form';
 
 const Login = () => {
@@ -16,6 +16,11 @@ const Login = () => {
     console.log('data: ', data)
     submitForm(data, {method: 'post'})
   }
+
+  const navigation = useNavigation()
+  const isSubmitting = navigation.state !== "idle"
+
+  const routeError = useRouteError()
 
   return (
     <>
@@ -75,10 +80,22 @@ const Login = () => {
                 }
               </div>
               <div className="text-center mt-3">
-                <button type="submit" className="btn btn-lg btn-primary">
-                  وارد شوید
+                <button disabled={isSubmitting} type="submit" className="btn btn-lg btn-primary">
+                  {isSubmitting ? 'در حال ارسال' : 'وارد شوید'}
                 </button>
               </div>
+              {console.log('routeError: ', routeError)}
+              {
+                routeError && (
+                  <div className='alert alert-danger text-danger p-2 mt-3'>
+                    {routeError.response?.data.map((error, index) => (
+                      <p key={error.id ?? index} className='mb-0'>
+                        {error.code}
+                      </p>
+                    ))}
+                  </div>
+                )
+              }
             </form>
           </div>
         </div>
@@ -95,6 +112,6 @@ export async function loginAction ({request}) {
   if (response.status === 200) {
     console.log('request: ', response)
     localStorage.setItem('token', response?.data.token)
-    // return redirect('/')
+    return redirect('/')
   }
 }
