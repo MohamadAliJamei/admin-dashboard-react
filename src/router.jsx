@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login, { loginAction } from "./features/identity/components/login";
 import Register, { registerAction } from "./features/identity/components/register";
 import IdentityLayout from "./layouts/identity-layout";
-import Courses from "./pages/courses";
+import Courses, { coursesLoader } from "./pages/courses";
 import MainLayout from "./layouts/mainLayout/main-layout";
 
 const router = createBrowserRouter([
@@ -11,7 +11,8 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [{
       element: <Courses />,
-      index: true
+      index: true,
+      loader: coursesLoader
     }]
   },
   {
