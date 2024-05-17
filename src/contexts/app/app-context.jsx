@@ -7,7 +7,8 @@ import appReducer from "./app-reducer";
 const AppContext = createContext();
 const initialState = {
     language: localStorage.getItem('language') || 'fa',
-    theme: localStorage.getItem('theme') || 'light'
+    theme: localStorage.getItem('theme') || 'light',
+    showSidebar: true
 };
 const AppProvider = ({children}) => {
     const {i18n} = useTranslation();
@@ -18,8 +19,11 @@ const AppProvider = ({children}) => {
     }
 
     const changeTheme = (theme) => {
-console.log(theme)
         dispatch({type: 'CHANGE_THEME', payload: theme});
+    }
+
+    const toggleSidebar = () => {
+        dispatch({type: 'TOGGLE_SIDEBAR'})
     }
 
     useEffect(() => {
@@ -33,7 +37,7 @@ console.log(theme)
         localStorage.setItem('theme', state.theme);
     }, [state.theme])
 
-    return <AppContext.Provider value={{...state, changeLanguage, changeTheme}}>
+    return <AppContext.Provider value={{...state, changeLanguage, changeTheme, toggleSidebar}}>
         {children}
     </AppContext.Provider>
 }
