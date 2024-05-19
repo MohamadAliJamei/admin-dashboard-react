@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useAppContext } from "../../contexts/app/app-context";
 import logo from "@assets/images/logo.svg";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const { t } = useTranslation()
@@ -16,7 +17,7 @@ const Sidebar = () => {
       <ul className="sidebar-nav pe-0">
         <li className="sidebar-header fw-bolder fs-lg">مدیریت دوره ها</li>
         <li className="sidebar-item">
-          <a className="sidebar-link">
+          <Link className="sidebar-link" to="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -34,10 +35,10 @@ const Sidebar = () => {
             </svg>
 
             <span className="align-middle me-2">همه دوره ها</span>
-          </a>
+          </Link>
         </li>
         <li className="sidebar-item">
-          <a className="sidebar-link">
+          <Link className="sidebar-link" to="/course-categories">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -55,7 +56,7 @@ const Sidebar = () => {
             </svg>
 
             <span className="align-middle me-2">دسته بندی دوره ها</span>
-          </a>
+          </Link>
         </li>
         <li className="sidebar-item">
           <a className="sidebar-link">
