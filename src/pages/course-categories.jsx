@@ -26,14 +26,17 @@ const CourseCategories = () => {
   )
 }
 
-export async function categoriesLoader() {
+export async function categoriesLoader({request}) {
   return defer ({
-    categories: loadCategories()
+    categories: loadCategories(request)
   })
 }
 
-const loadCategories = async () => {
-  const response = await httpTnterceptedService.get('/CourseCategory/sieve');
+const loadCategories = async (request) => {
+  const page = new URL(request.url).searchParams.get('page') || 1;
+  const pageSize = 10;
+  const url = `/CourseCategory/sieve?page=${page}&pageSize=${pageSize}`
+  const response = await httpTnterceptedService.get(url);
   return response.data;
 }
 
