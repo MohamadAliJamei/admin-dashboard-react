@@ -34,7 +34,7 @@ export async function categoriesLoader({request}) {
 
 const loadCategories = async (request) => {
   const page = new URL(request.url).searchParams.get('page') || 1;
-  const pageSize = 10;
+  const pageSize = import.meta.env.PAGE_SIZE;
   const url = `/CourseCategory/sieve?page=${page}&pageSize=${pageSize}`
   const response = await httpTnterceptedService.get(url);
   return response.data;
