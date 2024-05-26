@@ -1,6 +1,5 @@
-import _, { keys } from 'lodash'
 import { useSearchParams } from 'react-router-dom';
-const Pagination = ({ totalRecord = 30, pageSize = import.meta.env.PAGE_SIZE }) => {
+const Pagination = ({ totalRecord = 30, pageSize = import.meta.env.VITE_PAGE_SIZE }) => {
   const pages = Math.ceil(totalRecord / pageSize);
   const paginationArray = Array.from(Array(pages).keys())
 

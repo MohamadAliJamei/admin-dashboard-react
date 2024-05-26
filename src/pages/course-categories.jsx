@@ -6,7 +6,7 @@ import { Suspense } from "react";
 const CourseCategories = () => {
   const data = useLoaderData()
   return (
-    <div className="reow">
+    <div className="row">
     <div className="col-12">
       <div className="d-flex aling-items-center justify-contents-between mb-5">
         <a className="btn btn-primary fw-bolder mt-n1">
@@ -34,7 +34,7 @@ export async function categoriesLoader({request}) {
 
 const loadCategories = async (request) => {
   const page = new URL(request.url).searchParams.get('page') || 1;
-  const pageSize = import.meta.env.PAGE_SIZE;
+  const pageSize = import.meta.env.VITE_PAGE_SIZE;
   const url = `/CourseCategory/sieve?page=${page}&pageSize=${pageSize}`
   const response = await httpTnterceptedService.get(url);
   return response.data;
