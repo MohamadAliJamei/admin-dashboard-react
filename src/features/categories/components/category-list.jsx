@@ -2,7 +2,7 @@ import { useNavigation } from "react-router-dom";
 import Pagination from "../../../components/pagination";
 import Spinner from "../../../components/spinner";
 
-const CategoryList = ({ categories: { data, totalRecords }, setShowDeleteModal }) => {
+const CategoryList = ({ categories: { data, totalRecords }, deleteCategory }) => {
   const navigation = useNavigation();
   return (
     <>
@@ -26,9 +26,12 @@ const CategoryList = ({ categories: { data, totalRecords }, setShowDeleteModal }
                         <td className="table-action">
                           <a
                             className="ms-3 d-inline-block"
-                            onClick={() => setShowDeleteModal(true)}
+                            onClick={() => deleteCategory(category.id)}
                           >حذف</a>
-                          <a href="" className="ms-3 d-inline-block">ویرایش</a>
+                          <a
+                            href=""
+                            className="ms-3 d-inline-block"
+                          >ویرایش</a>
                         </td>
                       </tr>
                     )
