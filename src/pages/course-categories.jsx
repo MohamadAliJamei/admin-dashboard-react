@@ -3,6 +3,7 @@ import { httpTnterceptedService } from "@core/http-service";
 import CategoryList from "../features/categories/components/category-list";
 import { Suspense, useState } from "react";
 import Modal from "../components/modal";
+import { toast } from "react-toastify";
 
 const CourseCategories = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -17,11 +18,29 @@ const CourseCategories = () => {
 
   const handleDeleteCategory = async () => {
     setShowDeleteModal(false)
-    const response = await httpTnterceptedService.delete(`/CourseCategory/${selectedCategory}`)
-    if (response.status === 200) {
-      const url = new URL(window.location.href)
-      navigate(url.pathname + url.search)
+    // we remove await from here because we need a promise for toast
+    const response = httpTnterceptedService.delete(`/CourseCategory/${selectedCategory}`)
+    toast.promise(
+      response, {
+      pending: 'درحال حذف ...',
+      success: {
+        render() {
+          const url = new URL(window.location.href);
+          navigate(url.pathname + url.search);
+          return 'عملیات با موفقیت انجام شد'
+        }
+      },
+      error: {
+        render({data}) {
+          return data.response.data.code;
+        }
+      }
+    }, {
+      position: toast.POSITION.BOTTOM_LEFT
     }
+    )
+
+
   }
 
   const data = useLoaderData()
@@ -58,9 +77,9 @@ const CourseCategories = () => {
           انصراف
         </button>
         <button
-        type="button"
-        className="btn btn-primary fw-bolder"
-        onClick={handleDeleteCategory}
+          type="button"
+          className="btn btn-primary fw-bolder"
+          onClick={handleDeleteCategory}
         >
           حذف
         </button>
