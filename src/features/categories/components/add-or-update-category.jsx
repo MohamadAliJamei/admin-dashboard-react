@@ -2,11 +2,31 @@ import { useForm } from "react-hook-form";
 import { httpTnterceptedService } from "@core/http-service";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useCategoryContext } from "../category-context";
+import { useEffect } from "react";
 
 const AddOrUpdateCategory = ({ setShowAddCategory }) => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors }
+  } = useForm()
+  const { category, setCategory } = useCategoryContext()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (category) {
+      setValue('name', category.name)
+      setValue('id', category.id)
+    }
+  }, [category])
+
+  const onClose = () => {
+    setShowAddCategory(false)
+    setCategory(null)
+  }
 
   const submitForm = (data) => {
     setShowAddCategory(false)
@@ -18,6 +38,9 @@ const AddOrUpdateCategory = ({ setShowAddCategory }) => {
         render() {
           const url = new URL(window.location.href);
           navigate(url.pathname + url.search);
+          if (category) {
+            setCategory(null);
+          }
           return 'عملیات با موفقیت انجام شد'
         }
       },
@@ -28,7 +51,7 @@ const AddOrUpdateCategory = ({ setShowAddCategory }) => {
           } else {
             return 'خطا در اجرای عملیات'
           }
-          
+
         }
       }
     }, {
@@ -49,7 +72,7 @@ const AddOrUpdateCategory = ({ setShowAddCategory }) => {
               {...register('name', {
                 required: true
               })}
-             />
+            />
             {
               errors.name && errors.name.type === 'required' && (
                 <p className="text-danger small fw-bolder mt-1">نام الزامی است</p>
@@ -60,7 +83,7 @@ const AddOrUpdateCategory = ({ setShowAddCategory }) => {
             <button
               type="button"
               className="btn btn-lg btn-secondary ms-3"
-              onClick={() => setShowAddCategory(false)}
+              onClick={onClose}
             >
               بستن
             </button>
