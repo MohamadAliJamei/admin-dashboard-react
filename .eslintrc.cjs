@@ -8,12 +8,15 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
-  "parser": "@babel/eslint-parser",
-  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
+  parser: "@babel/eslint-parser",
+  parserOptions: { ecmaVersion: 'latest', sourceType: 'module', requireConfigFile: false, babelOptions: {
+    "presets": ["@babel/preset-react"]
+ }, },
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
     'react/jsx-no-target-blank': 'off',
+    "react/prop-types": "off",
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
