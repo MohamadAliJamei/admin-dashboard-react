@@ -51,7 +51,6 @@ const AddOrUpdateCategory = ({ setShowAddCategory }) => {
           } else {
             return 'خطا در اجرای عملیات'
           }
-
         }
       }
     }, {
